@@ -78,6 +78,22 @@ public class GameManager : MonoBehaviour
         answers.Add("bool1 !| bool2");
         answers.Add("bool1 & !bool2");
 
+        // Question 3
+        questions.Add("Which is incorrect Syntax?");
+        correctAnswers.Add(1);
+        answers.Add("var1 =! 2;");
+        answers.Add("var1 <= 3;");
+        answers.Add("var1 == var2;");
+        answers.Add("var1 = var2;");
+
+        // Question 2
+        questions.Add("Access list vars at index 1!");
+        correctAnswers.Add(2);
+        answers.Add("vars.indexat(1)");
+        answers.Add("vars.[1]");
+        answers.Add("vars[1]");
+        answers.Add("vars(1)");
+
         correctAnswerNumber = generateQuestion();
     }
 

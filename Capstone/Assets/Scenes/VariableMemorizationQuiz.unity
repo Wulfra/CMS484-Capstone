@@ -294,7 +294,7 @@ GameObject:
   - component: {fileID: 197947451}
   m_Layer: 0
   m_Name: BlinderBackground4
-  m_TagString: Untagged
+  m_TagString: Blinder
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -759,7 +759,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 200}
-  m_LocalScale: {x: 5.625, y: 10, z: 6}
+  m_LocalScale: {x: 10, y: 20, z: 6}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -812,7 +812,7 @@ GameObject:
   - component: {fileID: 848665245}
   m_Layer: 0
   m_Name: BlinderBackground3
-  m_TagString: Untagged
+  m_TagString: Blinder
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1021,7 +1021,7 @@ GameObject:
   - component: {fileID: 1105546212}
   m_Layer: 0
   m_Name: BlinderBackground1
-  m_TagString: Untagged
+  m_TagString: Blinder
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1188,7 +1188,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_FirstSelected: {fileID: 0}
+  m_FirstSelected: {fileID: 1297647954}
   m_sendNavigationEvents: 1
   m_DragThreshold: 10
 --- !u!4 &1284526844
@@ -1247,10 +1247,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1297647954}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d2110278969a75d42aad3033198be815, type: 3}
+  m_Script: {fileID: 11500000, guid: 8ef40c4e6ccfd66449eb14401ea66c59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mouseLocation: {x: 0, y: 0, z: 0}
   cam: {fileID: 519420031}
   canClick: 1
   gameOver: 0
@@ -1260,9 +1259,9 @@ MonoBehaviour:
   answerBox2: {fileID: 270032734}
   answerBox3: {fileID: 524474108}
   answerBox4: {fileID: 926262313}
-  questions: []
-  answers: []
-  finalAnswers: []
+  gameVariables: 
+  chosenVariables: 
+  correctAnswerNumber: 0
 --- !u!1 &1693725042
 GameObject:
   m_ObjectHideFlags: 0
@@ -1311,12 +1310,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 400, y: 300}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 0.45
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -1382,7 +1381,7 @@ GameObject:
   - component: {fileID: 1889628676}
   m_Layer: 0
   m_Name: BlinderBackground2
-  m_TagString: Untagged
+  m_TagString: Blinder
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

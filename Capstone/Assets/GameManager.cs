@@ -21,23 +21,60 @@ public class GameManager : MonoBehaviour
     GameObject questionBlinder;
 
     public List<string> questions = new List<string>{};
-    public List<int> correctAnswers = new List<int>{};
     public List<string> answers = new List<string>{};
-    public int correctAnswerNumber;
+    public List<string> finalAnswers = new List<string>{};
+    int chosenQuestionNumber;
 
-    private int generateQuestion()
-    {
-        int questionNumber = Random.Range(0, questions.Count);
-        int answerStart = 4 * questionNumber;
+    private List<string> generateAnswers() {
 
-        questionBox.text = questions[questionNumber];
-        answerBox1.text = answers[answerStart];
-        answerBox2.text = answers[answerStart + 1];
-        answerBox3.text = answers[answerStart + 2];
-        answerBox4.text = answers[answerStart + 3];
+        // Create a list of 4 random answers
+        List<string> temporaryAnswers = new List<string>(answers);
+        List<string> chosenAnswers = new List<string>{};
+        int numAnswers = 0;
+        int randomAnswer;
+        
 
-        return correctAnswers[questionNumber];
+        while (numAnswers < 4) {
+            randomAnswer = Random.Range(0, temporaryAnswers.Count);
+            chosenAnswers.Add(temporaryAnswers[randomAnswer]);
+            temporaryAnswers.RemoveAt(randomAnswer);
+            numAnswers++;
+        }
+
+        return chosenAnswers;
     }
+
+    private List<string> generateQuestion() {
+
+        // Choose a question
+        chosenQuestionNumber = Random.Range(0, questions.Count);
+        questionBox.text = questions[chosenQuestionNumber];
+
+        // Check if a random answer set has at least one correct answer for the question
+        List<string> tentativeAnswers = new List<string>{};
+        bool hasCorrectAnswer = false;
+
+        while (!hasCorrectAnswer) {
+            tentativeAnswers = generateAnswers();
+
+            // Loop through answers, check if each are correct for the question
+            foreach (string tentativeAnswer in tentativeAnswers) {
+                if (tentativeAnswer.Substring(tentativeAnswer.Length - 1) == chosenQuestionNumber.ToString()) {
+                    hasCorrectAnswer = true;
+                }
+            }
+        }
+
+        answerBox1.text = tentativeAnswers[0].Substring(0, tentativeAnswers[0].Length - 1);
+        answerBox2.text = tentativeAnswers[1].Substring(0, tentativeAnswers[1].Length - 1);
+        answerBox3.text = tentativeAnswers[2].Substring(0, tentativeAnswers[2].Length - 1);
+        answerBox4.text = tentativeAnswers[3].Substring(0, tentativeAnswers[3].Length - 1);
+        
+
+        return tentativeAnswers;
+
+    }
+
     private IEnumerator Countdown5() {
         timerRunning = true;
         yield return new WaitForSeconds(5.0f); //wait 5 seconds
@@ -49,7 +86,7 @@ public class GameManager : MonoBehaviour
         questionBlinder.SetActive(false);
 
         timerRunning = false;
-}
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -61,40 +98,33 @@ public class GameManager : MonoBehaviour
             blinder.SetActive(false);
         }
         StartCoroutine(Countdown5());
-        
-        // Question 1
+
+        // Questions
         questions.Add("Create a list of type int!");
-        correctAnswers.Add(3);
-        answers.Add("int[] list;");
-        answers.Add("list = int[1, 2, 3]");
-        answers.Add("List<int> list;");
-        answers.Add("list = int<1, 2, 3>");
-
-        // Question 2
         questions.Add("Write a XOR operation!");
-        correctAnswers.Add(2);
-        answers.Add("bool1 | bool2");
-        answers.Add("bool1 ^ bool2");
-        answers.Add("bool1 !| bool2");
-        answers.Add("bool1 & !bool2");
-
-        // Question 3
         questions.Add("Which is incorrect Syntax?");
-        correctAnswers.Add(1);
-        answers.Add("var1 =! 2;");
-        answers.Add("var1 <= 3;");
-        answers.Add("var1 == var2;");
-        answers.Add("var1 = var2;");
-
-        // Question 2
         questions.Add("Access list vars at index 1!");
-        correctAnswers.Add(2);
-        answers.Add("vars.indexat(1)");
-        answers.Add("vars.[1]");
-        answers.Add("vars[1]");
-        answers.Add("vars(1)");
+        
+        // Answers
+        answers.Add("int[] list;f");
+        answers.Add("list = int[1, 2, 3]f");
+        answers.Add("List<int> list;f");
+        answers.Add("list = int<1, 2, 3>0");
+        answers.Add("bool1 | bool2f");
+        answers.Add("bool1 ^ bool21");
+        answers.Add("bool1 !| bool2f");
+        answers.Add("bool1 & !bool2f");
+        answers.Add("var1 =! 2;2");
+        answers.Add("var1 <= 3;f");
+        answers.Add("var1 == var2;f");
+        answers.Add("var1 = var2;f");
+        answers.Add("vars.indexat(1)f");
+        answers.Add("vars.[1]f");
+        answers.Add("vars[1]3");
+        answers.Add("vars(1)f");
 
-        correctAnswerNumber = generateQuestion();
+        finalAnswers = generateQuestion();
+
     }
 
     // Update is called once per frame
@@ -104,13 +134,19 @@ public class GameManager : MonoBehaviour
             canClick = false;
             gameOver = false;
 
+            for (int i = 1; i < 5; i++) {
+                GameObject.Find("BlinderBackground" + i.ToString()).GetComponent<SpriteRenderer>().color = new Color(.275f, .275f, .275f, 1f);
+            }
+
             foreach (GameObject blinder in blinders)
             {
                 blinder.SetActive(false);
             }
+
             questionBlinder.SetActive(true);
-            correctAnswerNumber = generateQuestion();
+            finalAnswers = generateQuestion();
             StartCoroutine(Countdown5());
+
         } else if (canClick && Input.GetMouseButtonDown(0) && !timerRunning) {
             canClick = false;
 
@@ -120,14 +156,48 @@ public class GameManager : MonoBehaviour
             if (hit.collider != null) {
                 GameObject answer = hit.collider.gameObject;
                 string answerNumberString = answer.name.Substring(answer.name.Length - 1);
-                int answerNumber = int.Parse(answerNumberString);
+                int answerNumber = int.Parse(answerNumberString) - 1;
+                string chosenAnswerString = finalAnswers[answerNumber].Substring(finalAnswers[answerNumber].Length - 1);
+                int chosenAnswerNumber;
+                if (chosenAnswerString == "f") {
+                    chosenAnswerNumber = -1;
+                } else {
+                    chosenAnswerNumber = int.Parse(chosenAnswerString);
+                }
 
                 questionBlinder.SetActive(false);
 
-                if (answerNumber == correctAnswerNumber) {
+                if (chosenAnswerNumber == chosenQuestionNumber) {
                     questionBox.text = "Correct!";
+                    GameObject.Find("BlinderBackground" + answerNumberString).GetComponent<SpriteRenderer>().color = new Color(.24f, .6f, .35f, 1f);
+
+                    foreach (GameObject blinder in blinders)
+                    {
+                        blinder.SetActive(false);
+                    }
                 } else {
                     questionBox.text = "Incorrect!";
+                    GameObject.Find("BlinderBackground" + answerNumberString).GetComponent<SpriteRenderer>().color = new Color(.6f, .28f, .24f, 1f);
+
+                    for (int i = 1; i < 5; i++) {
+                        int tempAnswerNumber = i - 1;
+                        string tempChosenAnswerString = finalAnswers[tempAnswerNumber].Substring(finalAnswers[tempAnswerNumber].Length - 1);
+                        int tempChosenAnswerNumber;
+                        if (tempChosenAnswerString == "f") {
+                            tempChosenAnswerNumber = -1;
+                        } else {
+                            tempChosenAnswerNumber = int.Parse(tempChosenAnswerString);
+                        }
+
+                        if (tempChosenAnswerNumber == chosenQuestionNumber) {
+                            GameObject.Find("BlinderBackground" + i.ToString()).GetComponent<SpriteRenderer>().color = new Color(.24f, .6f, .35f, 1f);
+                        }
+                    }
+
+                    foreach (GameObject blinder in blinders)
+                    {
+                        blinder.SetActive(false);
+                    }
                 }
 
                 gameOver = true;

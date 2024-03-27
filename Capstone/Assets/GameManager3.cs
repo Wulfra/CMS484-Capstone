@@ -159,11 +159,21 @@ public class GameManager3 : MonoBehaviour
         List<string> tempCSharpQuestions = new List<string>(cSharpQuestions);
         List<string> tempPythonQuestions = new List<string>(pythonQuestions);
 
+        // Create loop variables that makes pairs of coding languages be chosen
+        bool secondInPair = false;
+        int chosenCategoryNumber = 0;
+
         // Loop until completion of question and answer lists
         while (cardQuestions.Count < 8) {
 
-            // Pick a random category of questions
-            int chosenCategoryNumber = Random.Range(1, 5);
+            if (!secondInPair) {
+                // Pick a random category of questions
+                chosenCategoryNumber = Random.Range(1, 5);
+                secondInPair = true;
+            } else {
+                secondInPair = false;
+            }
+            
             string chosenCategoryLetter = "";
             List<string> chosenCategory = new List<string>();
 
@@ -255,6 +265,8 @@ public class GameManager3 : MonoBehaviour
         // C#
         cSharpQuestions.Add("Console.WriteLine()");
         cSharpQuestions.Add("IDictionary<> dict");
+        cSharpQuestions.Add("List<string>");
+        cSharpQuestions.Add("Random.Range(0, 5)");
         // Python
         pythonQuestions.Add("print()");
         pythonQuestions.Add("dict()");

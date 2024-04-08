@@ -5,13 +5,17 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+    // Game control variables
     public Vector3 mouseLocation;
     public RaycastHit2D hit;
     public Camera cam;
     public bool canClick = true;
     public bool gameOver = false;
+    public bool gameStarted = false;
     public bool timerRunning = false;
+    public float difficulty = 8.0f;
 
+    // Object storage variables
     public Text questionBox;
     public Text answerBox1;
     public Text answerBox2;
@@ -20,6 +24,18 @@ public class GameManager : MonoBehaviour
     GameObject[] blinders;
     GameObject questionBlinder;
 
+    // Menu storage variables
+    private GameObject menuBackground;
+    private GameObject menuButton1;
+    private GameObject menuButton2;
+    private GameObject menuButton3;
+    private GameObject backButton;
+    public Text textBox1;
+    public Text textBox2;
+    public Text textBox3;
+    public Text backText;
+
+    // Game data variables
     public List<string> questions = new List<string>{};
     public List<string> answers = new List<string>{};
     public List<string> finalAnswers = new List<string>{};
@@ -75,9 +91,12 @@ public class GameManager : MonoBehaviour
 
     }
 
-    private IEnumerator Countdown5() {
+    private IEnumerator Countdown() {
         timerRunning = true;
-        yield return new WaitForSeconds(5.0f); //wait 5 seconds
+        backText.text = "";
+        backButton.SetActive(false);
+
+        yield return new WaitForSeconds(difficulty);
 
         foreach (GameObject blinder in blinders)
         {
@@ -85,19 +104,46 @@ public class GameManager : MonoBehaviour
         }
         questionBlinder.SetActive(false);
 
+        backText.text = "<";
+        backButton.SetActive(true);
         timerRunning = false;
+    }
+
+    private void disableMenu() {
+        // Disable menu and its buttons except for back
+        menuBackground.SetActive(false);
+        menuButton1.SetActive(false);
+        menuButton2.SetActive(false);
+        menuButton3.SetActive(false);
+        textBox1.text = "";
+        textBox2.text = "";
+        textBox3.text = "";
+    }
+
+    private void enableMenu() {
+        // Disable menu and its buttons except for back
+        menuBackground.SetActive(true);
+        menuButton1.SetActive(true);
+        menuButton2.SetActive(true);
+        menuButton3.SetActive(true);
+        textBox1.text = "Easy";
+        textBox2.text = "Medium";
+        textBox3.text = "Hard";
     }
 
     // Start is called before the first frame update
     void Start()
     {
+        // Find and store game objects
         blinders = GameObject.FindGameObjectsWithTag("Blinder");
         questionBlinder = GameObject.FindGameObjectWithTag("QuestionBlinder");
-        foreach (GameObject blinder in blinders)
-        {
-            blinder.SetActive(false);
-        }
-        StartCoroutine(Countdown5());
+
+        // Store menu items
+        menuBackground = GameObject.Find("MenuBackground");
+        menuButton1 = GameObject.Find("MenuButton1");
+        menuButton2 = GameObject.Find("MenuButton2");
+        menuButton3 = GameObject.Find("MenuButton3");
+        backButton = GameObject.Find("BackButton");
 
         // Questions
         questions.Add("Create a list of type int!");
@@ -123,6 +169,11 @@ public class GameManager : MonoBehaviour
         answers.Add("vars[1]3");
         answers.Add("vars(1)f");
 
+        // Prepare the game
+        foreach (GameObject blinder in blinders)
+        {
+            blinder.SetActive(false);
+        }
         finalAnswers = generateQuestion();
 
     }
@@ -130,77 +181,119 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (canClick && Input.GetMouseButtonDown(0) && gameOver && !timerRunning) {
-            canClick = false;
-            gameOver = false;
-
-            for (int i = 1; i < 5; i++) {
-                GameObject.Find("BlinderBackground" + i.ToString()).GetComponent<SpriteRenderer>().color = new Color(.275f, .275f, .275f, 1f);
-            }
-
-            foreach (GameObject blinder in blinders)
-            {
-                blinder.SetActive(false);
-            }
-
-            questionBlinder.SetActive(true);
-            finalAnswers = generateQuestion();
-            StartCoroutine(Countdown5());
-
-        } else if (canClick && Input.GetMouseButtonDown(0) && !timerRunning) {
+        if (canClick && Input.GetMouseButtonDown(0) && !timerRunning) {
             canClick = false;
 
+            // Assign mouse location and raycast
             mouseLocation = cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0));
             hit = Physics2D.Raycast(new Vector2(mouseLocation.x, mouseLocation.y), new Vector2(0, 0));
 
-            if (hit.collider != null) {
-                GameObject answer = hit.collider.gameObject;
-                string answerNumberString = answer.name.Substring(answer.name.Length - 1);
-                int answerNumber = int.Parse(answerNumberString) - 1;
-                string chosenAnswerString = finalAnswers[answerNumber].Substring(finalAnswers[answerNumber].Length - 1);
-                int chosenAnswerNumber;
-                if (chosenAnswerString == "f") {
-                    chosenAnswerNumber = -1;
-                } else {
-                    chosenAnswerNumber = int.Parse(chosenAnswerString);
+            if (gameOver) {
+                // If game is over and mouse is clicked, reset game and go back to menu
+                
+                gameOver = false;
+                gameStarted = false;
+
+                for (int i = 1; i < 5; i++) {
+                    GameObject.Find("BlinderBackground" + i.ToString()).GetComponent<SpriteRenderer>().color = new Color(.275f, .275f, .275f, 1f);
                 }
 
-                questionBlinder.SetActive(false);
+                foreach (GameObject blinder in blinders)
+                {
+                    blinder.SetActive(false);
+                }
 
-                if (chosenAnswerNumber == chosenQuestionNumber) {
-                    questionBox.text = "Correct!";
-                    GameObject.Find("BlinderBackground" + answerNumberString).GetComponent<SpriteRenderer>().color = new Color(.24f, .6f, .35f, 1f);
+                questionBlinder.SetActive(true);
+                finalAnswers = generateQuestion();
+                enableMenu();
 
-                    foreach (GameObject blinder in blinders)
-                    {
-                        blinder.SetActive(false);
-                    }
-                } else {
-                    questionBox.text = "Incorrect!";
-                    GameObject.Find("BlinderBackground" + answerNumberString).GetComponent<SpriteRenderer>().color = new Color(.6f, .28f, .24f, 1f);
+            } else if (hit.collider != null) {
+
+                GameObject answer = hit.collider.gameObject;
+
+                if (answer.name == "BackButton") {
+                    // If back is clicked, reset the game and go back to menu
+                
+                    gameOver = false;
+                    gameStarted = false;
 
                     for (int i = 1; i < 5; i++) {
-                        int tempAnswerNumber = i - 1;
-                        string tempChosenAnswerString = finalAnswers[tempAnswerNumber].Substring(finalAnswers[tempAnswerNumber].Length - 1);
-                        int tempChosenAnswerNumber;
-                        if (tempChosenAnswerString == "f") {
-                            tempChosenAnswerNumber = -1;
-                        } else {
-                            tempChosenAnswerNumber = int.Parse(tempChosenAnswerString);
-                        }
-
-                        if (tempChosenAnswerNumber == chosenQuestionNumber) {
-                            GameObject.Find("BlinderBackground" + i.ToString()).GetComponent<SpriteRenderer>().color = new Color(.24f, .6f, .35f, 1f);
-                        }
+                        GameObject.Find("BlinderBackground" + i.ToString()).GetComponent<SpriteRenderer>().color = new Color(.275f, .275f, .275f, 1f);
                     }
 
                     foreach (GameObject blinder in blinders)
                     {
                         blinder.SetActive(false);
                     }
-                }
 
-                gameOver = true;
+                    questionBlinder.SetActive(true);
+                    finalAnswers = generateQuestion();
+                    enableMenu();
+
+                } else if (!gameStarted) {
+                    // Check for menu button clicks
+
+                    string answerName = answer.name;
+                
+                    if (answerName == "MenuButton1") {
+                        difficulty = 8.0f;
+                    } else if (answerName == "MenuButton2") {
+                        difficulty = 5.0f;
+                    } else if (answerName == "MenuButton3") {
+                        difficulty = 2.0f;
+                    }
+
+                    gameStarted = true;
+                    disableMenu();
+                    StartCoroutine("Countdown");
+                } else {
+                    string answerNumberString = answer.name.Substring(answer.name.Length - 1);
+                    int answerNumber = int.Parse(answerNumberString) - 1;
+                    string chosenAnswerString = finalAnswers[answerNumber].Substring(finalAnswers[answerNumber].Length - 1);
+                    int chosenAnswerNumber;
+                    if (chosenAnswerString == "f") {
+                        chosenAnswerNumber = -1;
+                    } else {
+                        chosenAnswerNumber = int.Parse(chosenAnswerString);
+                    }
+
+                    questionBlinder.SetActive(false);
+
+                    if (chosenAnswerNumber == chosenQuestionNumber) {
+                        questionBox.text = "Correct!";
+                        GameObject.Find("BlinderBackground" + answerNumberString).GetComponent<SpriteRenderer>().color = new Color(.24f, .6f, .35f, 1f);
+
+                        foreach (GameObject blinder in blinders)
+                        {
+                            blinder.SetActive(false);
+                        }
+                    } else {
+                        questionBox.text = "Incorrect!";
+                        GameObject.Find("BlinderBackground" + answerNumberString).GetComponent<SpriteRenderer>().color = new Color(.6f, .28f, .24f, 1f);
+
+                        for (int i = 1; i < 5; i++) {
+                            int tempAnswerNumber = i - 1;
+                            string tempChosenAnswerString = finalAnswers[tempAnswerNumber].Substring(finalAnswers[tempAnswerNumber].Length - 1);
+                            int tempChosenAnswerNumber;
+                            if (tempChosenAnswerString == "f") {
+                                tempChosenAnswerNumber = -1;
+                            } else {
+                                tempChosenAnswerNumber = int.Parse(tempChosenAnswerString);
+                            }
+
+                            if (tempChosenAnswerNumber == chosenQuestionNumber) {
+                                GameObject.Find("BlinderBackground" + i.ToString()).GetComponent<SpriteRenderer>().color = new Color(.24f, .6f, .35f, 1f);
+                            }
+                        }
+
+                        foreach (GameObject blinder in blinders)
+                        {
+                            blinder.SetActive(false);
+                        }
+                    }
+
+                    gameOver = true;
+                }
 
             } else {
 

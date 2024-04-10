@@ -52,11 +52,13 @@ public class DialogueScript : MonoBehaviour
             for (int i = 0; i < charactersToPrint.Count; i++) {
                 // Cut last character off dialogue box text
                 string currentText = "";
+                Debug.Log(dialogueBox.text);
                 if (dialogueBox.text != "") {
-                    currentText = dialogueBox.text.Substring(0, dialogueBox.text.Length - 1);
+                    currentText = dialogueBox.text.Substring(2, i);
                 }
+                Debug.Log(currentText);
 
-                dialogueBox.text = currentText + charactersToPrint[i] + '|';
+                dialogueBox.text = "> " + currentText + charactersToPrint[i] + '|';
 
                 dialogueSound.Play();
 

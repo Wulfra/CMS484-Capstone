@@ -26,13 +26,14 @@ public class TruthTables : MonoBehaviour
     [SerializeField] private TMP_InputField UserInputField;
     [SerializeField] private Button submitButton;
     [SerializeField] private TMP_Text CorrectAnswer;
+    [SerializeField] private Button refresh;
 
     private List<string> ExpressionList = new List<string>
     {
         "A ^ B",
         "~(A ^ B)",
-        "A ⊕ B",
-        "~(A ⊕ B)",
+        "A \u2295 B",
+        "A \u2299 B",
         "A v B",
         "~(A v B)"
     };
@@ -55,7 +56,17 @@ public class TruthTables : MonoBehaviour
 
         submitButton.onClick.AddListener(() => CheckAnswer(Expression.text));
         ExpressionSelector();
+        refresh.onClick.AddListener(ResetGame);
 
+    }
+
+    public void ResetGame()
+    {
+        CorrectAnswer.text = "";
+        CorrectAnswer.color = Color.white;
+        UserInputField.text = "";
+
+        ExpressionSelector();
     }
 
     private void ExpressionSelector()
@@ -77,11 +88,11 @@ public class TruthTables : MonoBehaviour
         {
             CorrectAnswerString = "FTTT";
         }
-        if (selectedExpression == "A ⊕ B")
+        if (selectedExpression == "A \u2295 B")
         {
             CorrectAnswerString = "FTTF";
         }
-        if (selectedExpression == "~(A ⊕ B)")
+        if (selectedExpression == "A \u2299 B")
         {
             CorrectAnswerString = "TFFT";
         }

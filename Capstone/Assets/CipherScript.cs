@@ -11,6 +11,7 @@ public class CipherScript : MonoBehaviour
     [SerializeField] private TMP_Text shiftValueTextMeshPro;
     [SerializeField] private TMP_InputField answerInputField;
     [SerializeField] private Button submitButton;
+    [SerializeField] private Button refresh;
 
     private List<string> originalSentences = new List<string>();
     private List<string> cipheredSentences = new List<string>();
@@ -29,6 +30,24 @@ public class CipherScript : MonoBehaviour
         answerInputField.interactable = true;
         answerInputField.onValueChanged.AddListener(OnInputFieldValueChanged);
         submitButton.onClick.AddListener(CheckAnswer);
+        refresh.onClick.AddListener(ResetGame);
+    }
+
+    private void ResetGame()
+    {
+        // Reset UI elements
+        answerInputField.text = "";
+        originalTextMeshPro.text = "";
+        shiftValueTextMeshPro.text = "";
+        originalTextMeshPro.color = Color.white; // Assuming you want to reset the color
+
+        // Clear existing data
+        originalSentences.Clear();
+        cipheredSentences.Clear();
+        shiftValues.Clear();
+
+        // Reprocess the file content to generate new ciphered sentences with new shift values
+    ProcessFileContent();
     }
 
     // Locate Cipherable.txt
@@ -88,7 +107,7 @@ public class CipherScript : MonoBehaviour
             string sentence = parts[0].Trim();
             int shift = UnityEngine.Random.Range(1, 26);
             string ciphered = CipherKey(sentence, shift);
-            cipheredSentences.Add(ciphered);
+            cipheredSentences.Add(ciphered + " \n- " + parts[1]);
             shiftValues.Add(shift);
             //currentShiftValue = shift;
             // CheckAnswer(currentShiftValue);

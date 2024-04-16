@@ -1,0 +1,4 @@
+TestVariable1: 34
+TestVariable2: 1 2 3 4 5
+TestVariable3: 100 200
+OutlierVariable: 8 0 0 8

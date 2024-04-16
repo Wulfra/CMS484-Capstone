@@ -1,0 +1,17 @@
+TestDialogue1
+Well... this is getting harder, isn't it?
+Don't worry, I'm sure you'll get it soon
+Maybe... maybe not. Hopefully yes!
+|
+
+TestDialogue2
+Let's get that search function tested!
+I wonder if this will be picked up?
+If you're seeing this, the answer is yes!
+|
+
+TestDialogue3
+The end of the line is now.
+Okay, maybe that's a bit too dramatic.
+Maybe... maybe not. Hopefully yes!
+|

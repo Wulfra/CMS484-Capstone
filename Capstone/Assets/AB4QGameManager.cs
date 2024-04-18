@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -34,10 +35,10 @@ public class GameManager : MonoBehaviour
     private GameObject menuButton2;
     private GameObject menuButton3;
     private GameObject backButton;
+    private GameObject requiiButton;
     public Text textBox1;
     public Text textBox2;
     public Text textBox3;
-    public Text backText;
 
     // Game data variables
     public List<string> questions = new List<string>{};
@@ -97,8 +98,8 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator Countdown() {
         timerRunning = true;
-        backText.text = "";
         backButton.SetActive(false);
+        requiiButton.SetActive(false);
 
         yield return new WaitForSeconds(difficulty);
 
@@ -108,8 +109,8 @@ public class GameManager : MonoBehaviour
         }
         questionBlinder.SetActive(false);
 
-        backText.text = "<";
         backButton.SetActive(true);
+        requiiButton.SetActive(true);
         timerRunning = false;
     }
 
@@ -138,6 +139,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
         // Find and store game objects
         blinders = GameObject.FindGameObjectsWithTag("Blinder");
         questionBlinder = GameObject.FindGameObjectWithTag("QuestionBlinder");
@@ -148,6 +150,7 @@ public class GameManager : MonoBehaviour
         menuButton2 = GameObject.Find("MenuButton2");
         menuButton3 = GameObject.Find("MenuButton3");
         backButton = GameObject.Find("BackButton");
+        requiiButton = GameObject.Find("RequiiButton");
 
         // Questions
         questions.Add("Create a list of type int!");
@@ -185,133 +188,6 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        /*
-        // Start of mouse control block
-        if (canClick && Input.GetMouseButtonDown(0) && !timerRunning) {
-            canClick = false;
-
-            // Assign mouse location and raycast
-            mouseLocation = cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0));
-            hit = Physics2D.Raycast(new Vector2(mouseLocation.x, mouseLocation.y), new Vector2(0, 0));
-
-            if (gameOver) {
-                // If game is over and mouse is clicked, reset game and go back to menu
-                
-                gameOver = false;
-                gameStarted = false;
-
-                for (int i = 1; i < 5; i++) {
-                    GameObject.Find("BlinderBackground" + i.ToString()).GetComponent<SpriteRenderer>().color = new Color(.275f, .275f, .275f, 1f);
-                }
-
-                foreach (GameObject blinder in blinders)
-                {
-                    blinder.SetActive(false);
-                }
-
-                questionBlinder.SetActive(true);
-                finalAnswers = generateQuestion();
-                enableMenu();
-
-            } else if (hit.collider != null) {
-
-                GameObject answer = hit.collider.gameObject;
-
-                if (answer.name == "BackButton") {
-                    // If back is clicked, reset the game and go back to menu
-                
-                    gameOver = false;
-                    gameStarted = false;
-
-                    for (int i = 1; i < 5; i++) {
-                        GameObject.Find("BlinderBackground" + i.ToString()).GetComponent<SpriteRenderer>().color = new Color(.275f, .275f, .275f, 1f);
-                    }
-
-                    foreach (GameObject blinder in blinders)
-                    {
-                        blinder.SetActive(false);
-                    }
-
-                    questionBlinder.SetActive(true);
-                    finalAnswers = generateQuestion();
-                    enableMenu();
-
-                } else if (!gameStarted) {
-                    // Check for menu button clicks
-
-                    string answerName = answer.name;
-                
-                    if (answerName == "MenuButton1") {
-                        difficulty = 8.0f;
-                    } else if (answerName == "MenuButton2") {
-                        difficulty = 5.0f;
-                    } else if (answerName == "MenuButton3") {
-                        difficulty = 2.0f;
-                    }
-
-                    gameStarted = true;
-                    disableMenu();
-                    StartCoroutine("Countdown");
-                } else {
-                    string answerNumberString = answer.name.Substring(answer.name.Length - 1);
-                    int answerNumber = int.Parse(answerNumberString) - 1;
-                    string chosenAnswerString = finalAnswers[answerNumber].Substring(finalAnswers[answerNumber].Length - 1);
-                    int chosenAnswerNumber;
-                    if (chosenAnswerString == "f") {
-                        chosenAnswerNumber = -1;
-                    } else {
-                        chosenAnswerNumber = int.Parse(chosenAnswerString);
-                    }
-
-                    questionBlinder.SetActive(false);
-
-                    if (chosenAnswerNumber == chosenQuestionNumber) {
-                        questionBox.text = "Correct!";
-                        GameObject.Find("BlinderBackground" + answerNumberString).GetComponent<SpriteRenderer>().color = new Color(.24f, .6f, .35f, 1f);
-
-                        foreach (GameObject blinder in blinders)
-                        {
-                            blinder.SetActive(false);
-                        }
-                    } else {
-                        questionBox.text = "Incorrect!";
-                        GameObject.Find("BlinderBackground" + answerNumberString).GetComponent<SpriteRenderer>().color = new Color(.6f, .28f, .24f, 1f);
-
-                        for (int i = 1; i < 5; i++) {
-                            int tempAnswerNumber = i - 1;
-                            string tempChosenAnswerString = finalAnswers[tempAnswerNumber].Substring(finalAnswers[tempAnswerNumber].Length - 1);
-                            int tempChosenAnswerNumber;
-                            if (tempChosenAnswerString == "f") {
-                                tempChosenAnswerNumber = -1;
-                            } else {
-                                tempChosenAnswerNumber = int.Parse(tempChosenAnswerString);
-                            }
-
-                            if (tempChosenAnswerNumber == chosenQuestionNumber) {
-                                GameObject.Find("BlinderBackground" + i.ToString()).GetComponent<SpriteRenderer>().color = new Color(.24f, .6f, .35f, 1f);
-                            }
-                        }
-
-                        foreach (GameObject blinder in blinders)
-                        {
-                            blinder.SetActive(false);
-                        }
-                    }
-
-                    gameOver = true;
-                }
-
-            } else {
-
-            }
-        }
-
-        if (Input.GetMouseButtonUp(0))
-        {
-            canClick = true;
-        }
-        // End of mouse control block
-        */
         
         // Start of touch control block
         if (canTouch && (Input.touchCount > 0) && !timerRunning) {
@@ -346,23 +222,28 @@ public class GameManager : MonoBehaviour
                 GameObject answer = hit.collider.gameObject;
 
                 if (answer.name == "BackButton") {
-                    // If back is clicked, reset the game and go back to menu
-                
-                    gameOver = false;
-                    gameStarted = false;
+                    // If back is clicked while game is started, reset the game and go back to menu
+                    // Otherwise, go back to menu scene
+                    if (gameStarted) {
+                        gameOver = false;
+                        gameStarted = false;
 
-                    for (int i = 1; i < 5; i++) {
-                        GameObject.Find("BlinderBackground" + i.ToString()).GetComponent<SpriteRenderer>().color = new Color(.275f, .275f, .275f, 1f);
+                        for (int i = 1; i < 5; i++) {
+                            GameObject.Find("BlinderBackground" + i.ToString()).GetComponent<SpriteRenderer>().color = new Color(.275f, .275f, .275f, 1f);
+                        }
+
+                        foreach (GameObject blinder in blinders)
+                        {
+                            blinder.SetActive(false);
+                        }
+
+                        questionBlinder.SetActive(true);
+                        finalAnswers = generateQuestion();
+                        enableMenu();
+                    } else {
+                        SceneManager.LoadScene("Menu");
                     }
-
-                    foreach (GameObject blinder in blinders)
-                    {
-                        blinder.SetActive(false);
-                    }
-
-                    questionBlinder.SetActive(true);
-                    finalAnswers = generateQuestion();
-                    enableMenu();
+                    
 
                 } else if (!gameStarted) {
                     // Check for menu button clicks

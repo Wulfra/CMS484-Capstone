@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameManager2 : MonoBehaviour
 {
@@ -33,10 +34,10 @@ public class GameManager2 : MonoBehaviour
     private GameObject menuButton2;
     private GameObject menuButton3;
     private GameObject backButton;
+    private GameObject requiiButton;
     public Text textBox1;
     public Text textBox2;
     public Text textBox3;
-    public Text backText;
 
     // Game variables
     public List<int> gameVariables = new List<int>();
@@ -173,8 +174,8 @@ public class GameManager2 : MonoBehaviour
     private IEnumerator RunGame() {
         // Prevent input until completion of sequence
         timerRunning = true;
-        backText.text = "";
         backButton.SetActive(false);
+        requiiButton.SetActive(false);
 
         // Difficulty variables
         int numVariables = difficulty;
@@ -284,7 +285,7 @@ public class GameManager2 : MonoBehaviour
         }
 
         // Re-enable input
-        backText.text = "<";
+        requiiButton.SetActive(true);
         backButton.SetActive(true);
         timerRunning = false;
     }
@@ -301,6 +302,7 @@ public class GameManager2 : MonoBehaviour
         menuButton2 = GameObject.Find("MenuButton2");
         menuButton3 = GameObject.Find("MenuButton3");
         backButton = GameObject.Find("BackButton");
+        requiiButton = GameObject.Find("RequiiButton");
         
         answerBoxes[0] = answerBox1;
         answerBoxes[1] = answerBox2;
@@ -312,50 +314,6 @@ public class GameManager2 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        /*
-        // Start of mouse control block
-        if (canClick && Input.GetMouseButtonDown(0) && gameOver && !timerRunning) {
-            canClick = false;
-            gameOver = false;
-            
-            StartCoroutine(RunGame());
-
-        } else if (canClick && Input.GetMouseButtonDown(0) && !timerRunning) {
-            canClick = false;
-
-            mouseLocation = cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0));
-            hit = Physics2D.Raycast(new Vector2(mouseLocation.x, mouseLocation.y), new Vector2(0, 0));
-
-            if (hit.collider != null) {
-                GameObject answer = hit.collider.gameObject;
-                string answerNumberString = answer.name.Substring(answer.name.Length - 1);
-                int answerNumber = int.Parse(answerNumberString);
-                
-                if (answerNumber == correctAnswerNumber) {
-
-                    GameObject.Find("BlinderBackground" + answerNumberString).GetComponent<SpriteRenderer>().color = new Color(.24f, .6f, .35f, 1f);
-
-                } else {
-
-                    GameObject.Find("BlinderBackground" + answerNumberString).GetComponent<SpriteRenderer>().color = new Color(.6f, .28f, .24f, 1f);
-
-                    GameObject.Find("BlinderBackground" + correctAnswerNumber.ToString()).GetComponent<SpriteRenderer>().color = new Color(.24f, .6f, .35f, 1f);
-
-                }
-
-                gameOver = true;
-
-            } else {
-
-            }
-        }
-
-        if (Input.GetMouseButtonUp(0))
-        {
-            canClick = true;
-        }
-        // End of mouse control block
-        */
 
         // Start of touch control block
         if (canTouch && (Input.touchCount > 0) && !timerRunning) {
@@ -378,10 +336,14 @@ public class GameManager2 : MonoBehaviour
 
                 if (answer.name == "BackButton") {
 
-                    gameOver = false;
-                    gameStarted = false;
-                    
-                    enableMenu();
+                    if (gameStarted) {
+                        gameOver = false;
+                        gameStarted = false;
+                        
+                        enableMenu();
+                    } else {
+                        SceneManager.LoadScene("Menu");
+                    }
 
                 } else if (!gameStarted) {
                     // Check for menu button clicks if game not started

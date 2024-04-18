@@ -5,22 +5,37 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
+  - enabled: 1
+    path: Assets/Scenes/Menu.unity
+    guid: 4aadcef03461b4ef0ab33b189a21e0f9
+  - enabled: 1
     path: Assets/Scenes/Relaxation1.unity
     guid: 2cda990e2423bbf4892e6590ba056729
-  - enabled: 0
+  - enabled: 1
+    path: Assets/Scenes/Relaxation2.unity
+    guid: 545841f0412b0b04da997ea3b821131b
+  - enabled: 1
+    path: Assets/Scenes/Relaxation3.unity
+    guid: 0fa1cc11392d8fa439c69b915b6ccc99
+  - enabled: 1
+    path: Assets/Scenes/Logic1.unity
+    guid: 5c2e1cce43ff74b9d815819d814fac84
+  - enabled: 1
+    path: Assets/Scenes/Logic2.unity
+    guid: f90f9b3be9ac4406598713af2cfc8db6
+  - enabled: 1
+    path: Assets/Scenes/Logic3.unity
+    guid: 2a35d96eff8476b438660f5e6877545e
+  - enabled: 1
+    path: Assets/Scenes/Memory1.unity
+    guid: 61b4d69c4d052984cadaec05c2bb42df
+  - enabled: 1
+    path: Assets/Scenes/Memory2.unity
+    guid: 39354e39127fb8347b2565615c4dfa25
+  - enabled: 1
     path: Assets/Scenes/Memory3.unity
     guid: aa246c99dee9a5a44bdf3a1d7d299af9
   - enabled: 0
     path: Assets/Scenes/RequiiTest.unity
     guid: 86866352d10b38843bf506c0d897cc63
-  - enabled: 0
-    path: Assets/Scenes/Memory1.unity
-    guid: 61b4d69c4d052984cadaec05c2bb42df
-  - enabled: 0
-    path: Assets/Scenes/Memory2.unity
-    guid: 39354e39127fb8347b2565615c4dfa25
-  - enabled: 1
-    path: Assets/Scenes/Relaxation3.unity
-    guid: 0fa1cc11392d8fa439c69b915b6ccc99
   m_configObjects: {}

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameManagerSort : MonoBehaviour
 {
@@ -33,6 +34,7 @@ public class GameManagerSort : MonoBehaviour
     private GameObject menuButton2;
     private GameObject menuButton3;
     private GameObject backButton;
+    private GameObject requiiButton;
     public Text textBox1;
     public Text textBox2;
     public Text textBox3;
@@ -196,6 +198,7 @@ public class GameManagerSort : MonoBehaviour
         menuButton2 = GameObject.Find("MenuButton2");
         menuButton3 = GameObject.Find("MenuButton3");
         backButton = GameObject.Find("BackButton");
+        requiiButton = GameObject.Find("RequiiButton");
 
         // Store sorting bars
         for (int i = 1; i < sortingBars.Length + 1; i++) {
@@ -216,14 +219,6 @@ public class GameManagerSort : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        /* Dialogue Testing
-        if ((Random.Range(1, 301) == 1) && !dScript.dialogueRunning) {
-            List<string> dialogueQueue = new List<string>{};
-            dialogueQueue.Add("This is quite mesmerizing, isn't it?");
-
-            StartCoroutine(dScript.printDialogue(dialogueQueue));
-        }
-        */
 
         if (chosenAlgorithm == 0) {
             // Enable the menu
@@ -280,17 +275,21 @@ public class GameManagerSort : MonoBehaviour
                 
                 if (answerName == "BackButton") {
 
-                    // Reset algorithm
-                    chosenAlgorithm = 0;
+                    if (timerRunning) {
+                        // Reset algorithm
+                        chosenAlgorithm = 0;
 
-                    // Stop any running algorithms
-                    StopCoroutine("runBubbleSort");
-                    StopCoroutine("runSelectionSort");
-                    StopCoroutine("runInsertionSort");
-                    timerRunning = false;
-                    
-                    // Reenable menu
-                    enableMenu();
+                        // Stop any running algorithms
+                        StopCoroutine("runBubbleSort");
+                        StopCoroutine("runSelectionSort");
+                        StopCoroutine("runInsertionSort");
+                        timerRunning = false;
+                        
+                        // Reenable menu
+                        enableMenu();
+                    } else {
+                        SceneManager.LoadScene("Menu");
+                    }
 
                 } else if (answerName == "MenuButton1") {
                     chosenAlgorithm = 1;

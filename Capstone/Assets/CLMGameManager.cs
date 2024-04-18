@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameManager3 : MonoBehaviour
 {
@@ -51,10 +52,10 @@ public class GameManager3 : MonoBehaviour
     private GameObject menuButton2;
     private GameObject menuButton3;
     private GameObject backButton;
+    private GameObject requiiButton;
     public Text textBox1;
     public Text textBox2;
     public Text textBox3;
-    public Text backText;
 
     private void DisableBackgroundText() {
 
@@ -240,8 +241,8 @@ public class GameManager3 : MonoBehaviour
 
     private IEnumerator CountdownToGameStart() {
         timerRunning = true;
-        backText.text = "";
         backButton.SetActive(false);
+        requiiButton.SetActive(false);
 
         // Reset all variables
         ResetGameVariables();
@@ -262,7 +263,7 @@ public class GameManager3 : MonoBehaviour
             answerBoxes[i].text = "";
         }
 
-        backText.text = "<";
+        requiiButton.SetActive(true);
         backButton.SetActive(true);
         timerRunning = false;
     }
@@ -309,6 +310,7 @@ public class GameManager3 : MonoBehaviour
         menuButton2 = GameObject.Find("MenuButton2");
         menuButton3 = GameObject.Find("MenuButton3");
         backButton = GameObject.Find("BackButton");
+        requiiButton = GameObject.Find("RequiiButton");
 
         // Store code snippets for questions
         // Java
@@ -331,39 +333,6 @@ public class GameManager3 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        /*
-        // Start of mouse control block
-        if (canClick && Input.GetMouseButtonDown(0) && gameOver && !timerRunning) {
-            canClick = false;
-            gameOver = false;
-            
-            StartCoroutine(CountdownToGameStart());
-
-        } else if (canClick && Input.GetMouseButtonDown(0) && !timerRunning) {
-            canClick = false;
-
-            mouseLocation = cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0));
-            hit = Physics2D.Raycast(new Vector2(mouseLocation.x, mouseLocation.y), new Vector2(0, 0));
-
-            if (hit.collider != null) {
-
-                GameObject answer = hit.collider.gameObject;
-                string answerNumberString = answer.name.Substring(answer.name.Length - 1);
-                int answerNumber = int.Parse(answerNumberString);
-                
-                checkCards(answerNumber);
-
-            } else {
-
-            }
-        }
-
-        if (Input.GetMouseButtonUp(0))
-        {
-            canClick = true;
-        }
-        // End of mouse control block
-        */
 
         // Start of touch control block
         if (canTouch && (Input.touchCount > 0) && !timerRunning) {
@@ -386,10 +355,14 @@ public class GameManager3 : MonoBehaviour
 
                 if (answer.name == "BackButton") {
 
-                    gameOver = false;
-                    gameStarted = false;
-                    
-                    enableMenu();
+                    if (gameStarted) {
+                        gameOver = false;
+                        gameStarted = false;
+                        
+                        enableMenu();
+                    } else {
+                        SceneManager.LoadScene("Menu");
+                    }
 
                 } else if (!gameStarted) {
                     // Check for menu button clicks if game not started

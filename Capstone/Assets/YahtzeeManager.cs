@@ -35,7 +35,7 @@ public class YahtzeeManager : MonoBehaviour
     public Text timerText;
     public Text rollText;
 
-
+    public GameObject suspend;
 
 
     // Function to activate one of the specified child objects randomly
@@ -212,7 +212,7 @@ public class YahtzeeManager : MonoBehaviour
         // Timer is done
         Debug.Log("Time has run out!");
         timeRemaining = 0;
-
+        suspend.SetActive(false);
     }
 
     void HoldOne()

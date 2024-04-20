@@ -20,7 +20,7 @@ public class RequiiScript : MonoBehaviour
     public IEnumerator stopRequii() {
         requiiAnimator.SetBool("isExiting", true);
 
-        yield return new WaitForSeconds(.9f);
+        yield return new WaitForSeconds(.85f);
 
         requii.SetActive(false);
     }
@@ -30,10 +30,10 @@ public class RequiiScript : MonoBehaviour
         runRequii();
 
         // Wait for startup animation to finish
-        yield return new WaitForSeconds(.9f);
+        yield return new WaitForSeconds(.85f);
 
         // Run dialogue script
-        dScript.printDialogue(dialogue);
+        StartCoroutine(dScript.printDialogue(dialogue));
 
         // Wait until dialogue is done
         while (dScript.dialogueRunning) {
@@ -41,15 +41,19 @@ public class RequiiScript : MonoBehaviour
         }
 
         // Exit requii
-        stopRequii();
+        StartCoroutine(stopRequii());
     }
 
-    public void runRandomRequiiDialogue(List<List<string>> randomDialogue) {
+    public IEnumerator runRandomRequiiDialogue(List<List<string>> randomDialogue) {
+        runRequii();
+
         // Pick a random line from the list of lists
         int chosenNum = Random.Range(0, randomDialogue.Count);
 
         // Play the chosen dialogue
-        runRequiiDialogue(randomDialogue[chosenNum]);
+        StartCoroutine(runRequiiDialogue(randomDialogue[chosenNum]));
+
+        yield return new WaitForSeconds(.1f);
     }
 
 }

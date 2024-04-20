@@ -36,6 +36,8 @@ public class ButtonScript : MonoBehaviour
                     SceneManager.LoadScene("Menu");
                 } else if (answer.name == "RequiiButton") {
                     // Load requii info
+                } else if (answer.name == "TapHere") {
+                    SceneManager.LoadScene("Menu");
                 }
 
             }

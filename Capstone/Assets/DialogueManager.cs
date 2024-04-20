@@ -4,88 +4,30 @@ using UnityEngine;
 
 public class DialogueManager : MonoBehaviour
 {
-    // Store scripts
-    public DialogueScript dScript;
-    public FileScript fScript;
+    // Store script
+    public RequiiScript rScript;
 
     // Store dialogue to be printed
     public List<string> dialogueQueue = new List<string>{};
-
-    // Store Requii variables
-    public GameObject requii;
-    public Animator requiiAnimator;
-
-    // Driver ienumerator
-    private IEnumerator runDialogueTest() {
-        // Wait a bit
-        yield return new WaitForSeconds(2.0f);
-        dScript.dialogueRunning = true;
-
-        // Start up requii
-        requii.SetActive(true);
-        yield return new WaitForSeconds(.8f);
-
-        // Run dialogue function
-        StartCoroutine(dScript.printDialogue(dialogueQueue));
-    }
-
-    private IEnumerator exitRequii() {
-        requiiAnimator.SetBool("isExiting", true);
-
-        yield return new WaitForSeconds(.8f);
-
-        requii.SetActive(false);
-    }
+    public List<List<string>> dialogueSet = new List<List<string>>{};
 
     // Start is called before the first frame update
     void Start()
     {
-        /*
+        
         // Add some lines
         dialogueQueue.Add("Well... hello there.");
+        /*
         dialogueQueue.Add("If you're seeing this, the test worked.");
         dialogueQueue.Add("So uh... that's cool, isn't it?");
         */
+
+        dialogueSet.Add(new List<string>() {"This is the first random set.", "Cool, isn't it? #1!"});
+        dialogueSet.Add(new List<string>() {"This is the second random set.", "Cool, isn't it? #2!"});
+        dialogueSet.Add(new List<string>() {"This is the third random set.", "Cool, isn't it? #3!"});
         
-        /*
-        dialogueQueue = new List<string>(fScript.testDialogue2);
-
-        StartCoroutine("runDialogueTest");
-        */
-        
-        
-        string tempString = "";
-
-        requiiAnimator.SetBool("isTurning", true);
-
-        List<int> testData = new List<int>(fScript.testVariable3);
-        tempString = "Old Data: ";
-        for (int i = 0; i < testData.Count; i++) {
-            tempString += testData[i].ToString() + ' ';
-        }
-        dialogueQueue.Add(tempString);
-
-        fScript.testVariable3 = new List<int>{105, 205};
-
-        testData = new List<int>(fScript.testVariable3);
-        tempString = "New Data: ";
-        for (int i = 0; i < testData.Count; i++) {
-            tempString += testData[i].ToString() + ' ';
-        }
-        dialogueQueue.Add(tempString);
-
-        StartCoroutine("runDialogueTest");
+        StartCoroutine(rScript.runRandomRequiiDialogue(dialogueSet));
         
 
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-        if (requii.activeSelf && !dScript.dialogueRunning) {
-            StartCoroutine("exitRequii");
-        }
-        
     }
 }

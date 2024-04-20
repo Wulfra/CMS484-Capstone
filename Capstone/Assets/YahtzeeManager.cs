@@ -228,32 +228,48 @@ public class YahtzeeManager : MonoBehaviour
     void HoldOne()
     {
         dieOneHold = !dieOneHold;
-        holdOne.SetActive(true);
+        if (rollText.text == "Roll 2")
+        {
+            holdOne.SetActive(true);
+        }
+        
 
     }
 
     void HoldTwo()
     {
         dieTwoHold = !dieTwoHold;
-        holdTwo.SetActive(true);
+        if (rollText.text == "Roll 2")
+        {
+            holdTwo.SetActive(true);
+        }
     }
 
     void HoldThree()
     {
         dieThreeHold = !dieThreeHold;
-        holdThree.SetActive(true);
+        if (rollText.text == "Roll 2")
+        {
+            holdThree.SetActive(true);
+        }
     }
 
     void HoldFour()
     {
         dieFourHold = !dieFourHold;
-        holdFour.SetActive(true);
+        if (rollText.text == "Roll 2")
+        {
+            holdFour.SetActive(true);
+        }
     }
 
     void HoldFive()
     {
         dieFiveHold = !dieFiveHold;
-        holdFive.SetActive(true);
+        if (rollText.text == "Roll 2")
+        {
+            holdFive.SetActive(true);
+        }
     }
 
     void ColorButton(Button button, bool isHold)

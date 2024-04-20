@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class YahtzeeManager : MonoBehaviour
 {
@@ -31,12 +32,14 @@ public class YahtzeeManager : MonoBehaviour
     bool dieFourHold = false;
     bool dieFiveHold = false;
     bool gameActive = true;
-    
+
     public Text timerText;
+    public Text rollText;
+    public Text finalScore;
 
-
-  
-
+    public GameObject finalScreen;
+    public GameObject suspend;
+    
 
     // Function to activate one of the specified child objects randomly
     public GameObject ActivateRandomChildObject(GameObject parentObject)
@@ -45,7 +48,8 @@ public class YahtzeeManager : MonoBehaviour
             parentObject.name == "DiceTwo" && dieTwoHold == false ||
             parentObject.name == "DiceThree" && dieThreeHold == false ||
             parentObject.name == "DiceFour" && dieFourHold == false ||
-            parentObject.name == "DiceFive" && dieFiveHold == false) {
+            parentObject.name == "DiceFive" && dieFiveHold == false)
+        {
             GameObject[] childObjects = new GameObject[parentObject.transform.childCount];
 
             // Initialize the array with the references to the child objects
@@ -67,7 +71,8 @@ public class YahtzeeManager : MonoBehaviour
             if (parentObject.name == "DiceOne" && !dieOneHold)
             {
                 myArray[0] = storage;
-            } else if (parentObject.name == "DiceTwo" && !dieTwoHold)
+            }
+            else if (parentObject.name == "DiceTwo" && !dieTwoHold)
             {
                 myArray[1] = storage;
             }
@@ -130,8 +135,8 @@ public class YahtzeeManager : MonoBehaviour
         if ((values[0] == values[1] && values[1] == values[2] && values[3] == values[4]) ||
             (values[0] == values[1] && values[2] == values[3] && values[3] == values[4]))
             score += 25;
-            return;
-        
+        return;
+
     }
 
 
@@ -150,6 +155,7 @@ public class YahtzeeManager : MonoBehaviour
     // Example usage
     void Start()
     {
+        rollText.text = "Start";
         StartCoroutine(Countdown(60));
         roll.onClick.AddListener(RollDice);
         dieOne.onClick.AddListener(HoldOne);
@@ -167,6 +173,7 @@ public class YahtzeeManager : MonoBehaviour
         {
             if (rollOne == true)
             {
+                rollText.text = "Roll 2";
                 rollOne = false;
                 dieOneHold = false;
                 dieTwoHold = false;
@@ -177,6 +184,7 @@ public class YahtzeeManager : MonoBehaviour
             }
             else
             {
+                rollText.text = "New Set";
                 rollOne = true;
                 locateScore();
                 holdOne.SetActive(false);
@@ -203,42 +211,65 @@ public class YahtzeeManager : MonoBehaviour
             yield return new WaitForSeconds(1f);
             timeRemaining -= 1f;
         }
-        
+
         // Timer is done
         Debug.Log("Time has run out!");
         timeRemaining = 0;
-        
+        suspend.SetActive(false);
+        finalScreen.SetActive(true);
+        finalScore.text = score.ToString();
+        for (int i = 0; i < 10; i++)
+        {
+            yield return new WaitForSeconds(1f);
+        }
+        SceneManager.LoadScene("Menu");
     }
 
     void HoldOne()
     {
         dieOneHold = !dieOneHold;
-        holdOne.SetActive(true);
+        if (rollText.text == "Roll 2")
+        {
+            holdOne.SetActive(true);
+        }
+        
 
     }
 
     void HoldTwo()
     {
         dieTwoHold = !dieTwoHold;
-        holdTwo.SetActive(true);
+        if (rollText.text == "Roll 2")
+        {
+            holdTwo.SetActive(true);
+        }
     }
 
     void HoldThree()
     {
         dieThreeHold = !dieThreeHold;
-        holdThree.SetActive(true);
+        if (rollText.text == "Roll 2")
+        {
+            holdThree.SetActive(true);
+        }
     }
 
     void HoldFour()
     {
         dieFourHold = !dieFourHold;
-        holdFour.SetActive(true);
+        if (rollText.text == "Roll 2")
+        {
+            holdFour.SetActive(true);
+        }
     }
 
     void HoldFive()
     {
         dieFiveHold = !dieFiveHold;
-        holdFive.SetActive(true);
+        if (rollText.text == "Roll 2")
+        {
+            holdFive.SetActive(true);
+        }
     }
 
     void ColorButton(Button button, bool isHold)
@@ -246,12 +277,12 @@ public class YahtzeeManager : MonoBehaviour
         ColorBlock colors = button.colors;
         if (isHold)
         {
-            
+
         }
         else
         {
-            
+
         }
-        
+
     }
 }

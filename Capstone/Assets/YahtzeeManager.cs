@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class YahtzeeManager : MonoBehaviour
 {
@@ -34,9 +35,11 @@ public class YahtzeeManager : MonoBehaviour
 
     public Text timerText;
     public Text rollText;
+    public Text finalScore;
 
+    public GameObject finalScreen;
     public GameObject suspend;
-
+    
 
     // Function to activate one of the specified child objects randomly
     public GameObject ActivateRandomChildObject(GameObject parentObject)
@@ -213,6 +216,13 @@ public class YahtzeeManager : MonoBehaviour
         Debug.Log("Time has run out!");
         timeRemaining = 0;
         suspend.SetActive(false);
+        finalScreen.SetActive(true);
+        finalScore.text = score.ToString();
+        for (int i = 0; i < 10; i++)
+        {
+            yield return new WaitForSeconds(1f);
+        }
+        SceneManager.LoadScene("Menu");
     }
 
     void HoldOne()

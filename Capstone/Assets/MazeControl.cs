@@ -6,27 +6,31 @@ using Random = UnityEngine.Random;
 
 public class MazeControl : MonoBehaviour
 {
-    public int numRows = 16;
-    public int numCols = 16;
+    public int numRows = 25;
+    public int numCols = 25;
+    public int numColumns = 25; // Number of columns of cubes
     public float obstacleProb = 0.80f;
     public int fullCount;
     public Button[] controls;
     public int numX = 0;
     public int numY = 0;
+    public GameObject cubePrefab;
+    public float gridWidth = 5f; // Width of the grid in Unity units
+    public float cubeScale = 0.2f; // Scale of each cube
 
     void Update()
     {
-        if (GameObject.Find($"{14}-{1}").GetComponent<Renderer>().material.color == Color.yellow)
+        if (GameObject.Find($"{23}-{1}").GetComponent<Renderer>().material.color == Color.yellow)
         {
-            Start();
+            StartOver();
         }
     }
 
     void ButtonClicked(Button button)
     {
-        for (int i = 0; i < 16; i++)
+        for (int i = 0; i < 25; i++)
         {
-            for (int x = 0; x < 16; x++)
+            for (int x = 0; x < 25; x++)
             {
                 GameObject cell = GameObject.Find($"{i}-{x}");
                 if (cell != null && cell.GetComponent<Renderer>() != null && cell.GetComponent<Renderer>().material.color == Color.yellow)
@@ -75,9 +79,49 @@ public class MazeControl : MonoBehaviour
         }
     }
 
+    void StartOver()
+    {
+        for (int trial = 0; trial < 5; trial++)
+        {
+            Debug.Log($"\n\n-----Easy trial {trial + 1}-----");
+            fullCount = Main(numRows, numCols, obstacleProb);
+        }
+        GameObject cube = GameObject.Find($"{1}-{23}");
+        if (cube != null)
+            cube.GetComponent<Renderer>().material.color = Color.yellow;
+        GameObject end = GameObject.Find($"{23}-{1}");
+        if (cube != null)
+            end.GetComponent<Renderer>().material.color = Color.green;
+        GameObject wallOne = GameObject.Find($"{2}-{23}");
+        if (cube != null)
+            wallOne.GetComponent<Renderer>().material.color = Color.white;
+        GameObject wallTwo = GameObject.Find($"{1}-{22}");
+        if (cube != null)
+            wallTwo.GetComponent<Renderer>().material.color = Color.white;
+    }
 
     private void Start()
     {
+        // Calculate the offset needed to center the grid
+        float xOffset = -gridWidth / 2f + cubeScale / 2f;
+        float yOffset = -gridWidth / 2f + cubeScale / 2f;
+
+        // Loop through rows and columns to instantiate cubes
+        for (int row = 0; row < numRows; row++)
+        {
+            for (int col = 0; col < numColumns; col++)
+            {
+                // Calculate position for the current cube
+                Vector3 position = new Vector3(col * cubeScale + xOffset, row * cubeScale + yOffset + 1, 0f);
+
+                // Instantiate the cube at the calculated position
+                GameObject cubeOne = Instantiate(cubePrefab, position, Quaternion.identity);
+                cubeOne.transform.localScale = new Vector3(cubeScale, cubeScale, cubeScale);
+
+                // Set the name of the cube based on its position
+                cubeOne.name = $"{col}-{row}";
+            }
+        }
         foreach (Button button in controls)
         {
             button.onClick.AddListener(() => ButtonClicked(button));
@@ -87,13 +131,16 @@ public class MazeControl : MonoBehaviour
             Debug.Log($"\n\n-----Easy trial {trial + 1}-----");
             fullCount = Main(numRows, numCols, obstacleProb);
         }
-        GameObject cube = GameObject.Find($"{2}-{13}");
+        GameObject cube = GameObject.Find($"{1}-{23}");
         if (cube != null)
             cube.GetComponent<Renderer>().material.color = Color.yellow;
-        GameObject wallOne = GameObject.Find($"{1}-{14}");
+        GameObject wallOne = GameObject.Find($"{2}-{23}");
         if (cube != null)
-            wallOne.GetComponent<Renderer>().material.color = Color.black;
-        GameObject end = GameObject.Find($"{14}-{1}");
+            wallOne.GetComponent<Renderer>().material.color = Color.white;
+        GameObject wallTwo = GameObject.Find($"{1}-{22}");
+        if (cube != null)
+            wallTwo.GetComponent<Renderer>().material.color = Color.white;
+        GameObject end = GameObject.Find($"{23}-{1}");
         if (cube != null)
             end.GetComponent<Renderer>().material.color = Color.green;
     }

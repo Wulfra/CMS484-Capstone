@@ -19,9 +19,12 @@ public class ButtonFalling : MonoBehaviour
     public Text valueText;
     public GameObject storageVar;
     public GameObject failText;
+    float elapsedTime = 0;
+    int highScore = 0;
 
     void Update()
     {
+        elapsedTime += Time.deltaTime;
         weightText.text = "Weight: " + weight.ToString();
         valueText.text = "Value: " + value.ToString();
 
@@ -35,6 +38,8 @@ public class ButtonFalling : MonoBehaviour
 
     void Start()
     {
+        elapsedTime = PlayerPrefs.GetFloat("Focus2Time", 0);
+        highScore = PlayerPrefs.GetInt("KnapSackHigh", 0);
         StartCoroutine(Countdown(60));
         fallingButtons = new Button[buttonsFallingCount];
         // Add listeners to buttons
@@ -53,78 +58,86 @@ public class ButtonFalling : MonoBehaviour
         if (button.name == "1-1")
         {
             weight += 1;
-            value += 1 * Random.Range(1, 2); ;
+            value += 1 * Random.Range(1, 2); 
         }
         if (button.name == "1-2")
         {
             weight += 1;
-            value += 2 * Random.Range(1, 2); ;
+            value += 2 * Random.Range(1, 2); 
         }
         if (button.name == "1-3")
         {
             weight += 1;
-            value += 3 * Random.Range(1, 2); ;
+            value += 3 * Random.Range(1, 2); 
         }
         if (button.name == "2-1")
         {
             weight += 2;
-            value += 1 * Random.Range(1, 3); ;
+            value += 1 * Random.Range(1, 3); 
         }
         if (button.name == "2-2")
         {
             weight += 2;
-            value += 2 * Random.Range(1, 3); ;
+            value += 2 * Random.Range(1, 3); 
         }
         if (button.name == "2-3")
         {
             weight += 2;
-            value += 3 * Random.Range(1, 3); ;
+            value += 3 * Random.Range(1, 3); 
         }
         if (button.name == "3-1")
         {
             weight += 3;
-            value += 1 * Random.Range(1, 4); ;
+            value += 1 * Random.Range(1, 4); 
         }
         if (button.name == "3-2")
         {
             weight += 3;
-            value += 2 * Random.Range(1, 4); ;
+            value += 2 * Random.Range(1, 4); 
         }
         if (button.name == "3-3")
         {
             weight += 3;
-            value += 3 * Random.Range(1, 4); ;
+            value += 3 * Random.Range(1, 4); 
         }
         if (button.name == "4-1")
         {
             weight += 4;
-            value += 1 * Random.Range(1, 5); ;
+            value += 1 * Random.Range(1, 5);
         }
         if (button.name == "4-2")
         {
             weight += 4;
-            value += 2 * Random.Range(1, 5); ;
+            value += 2 * Random.Range(1, 5); 
         }
         if (button.name == "4-3")
         {
             weight += 4;
-            value += 3 * Random.Range(1, 5); ;
+            value += 3 * Random.Range(1, 5); 
         }
         if (button.name == "5-1")
         {
             weight += 5;
-            value += 3 * Random.Range(1, 6); ;
+            value += 3 * Random.Range(1, 6); 
         }
         if (button.name == "5-2")
         {
             weight += 5;
-            value += 2 * Random.Range(1, 6); ;
+            value += 2 * Random.Range(1, 6); 
         }
         if (button.name == "5-3")
         {
             weight += 5;
             value += 3 * Random.Range(1, 6);
         }
+    }
+
+    void OnApplicationQuit()
+    {
+        // Save the score to PlayerPrefs when the application is quitting
+        PlayerPrefs.SetFloat("Focus2Time", elapsedTime);
+        PlayerPrefs.Save();
+
     }
 
     private IEnumerator Countdown(float timeRemaining)
@@ -139,7 +152,11 @@ public class ButtonFalling : MonoBehaviour
         // Timer is done
         Debug.Log("Time has run out!");
         timeRemaining = 0;
-
+        if (value > highScore)
+        {
+            PlayerPrefs.SetInt("KnapSackHigh", highScore);
+            PlayerPrefs.Save();
+        }
         for (int i = 0; i < 10; i++)
         {
             yield return new WaitForSeconds(1f);

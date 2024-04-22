@@ -17,13 +17,26 @@ public class MazeControl : MonoBehaviour
     public GameObject cubePrefab;
     public float gridWidth = 5f; // Width of the grid in Unity units
     public float cubeScale = 0.2f; // Scale of each cube
+    public float elapsedTime = 0;
+    public int mazesSolved;
 
     void Update()
     {
         if (GameObject.Find($"{23}-{1}").GetComponent<Renderer>().material.color == Color.yellow)
         {
             StartOver();
+            mazesSolved += 1;
         }
+        elapsedTime += Time.deltaTime;
+    }
+
+    void OnApplicationQuit()
+    {
+        // Save the score to PlayerPrefs when the application is quitting
+        PlayerPrefs.SetFloat("Focus3Time", elapsedTime);
+        PlayerPrefs.SetFloat("MazesSolved", mazesSolved);
+        PlayerPrefs.Save();
+
     }
 
     void ButtonClicked(Button button)
@@ -40,7 +53,10 @@ public class MazeControl : MonoBehaviour
                 }
             }
         }
-
+        if (button.name == "refresh")
+        {
+            StartOver();
+        }
         if (button.name == "up")
         {
             GameObject upCell = GameObject.Find($"{numX}-{numY + 1}");
@@ -102,6 +118,8 @@ public class MazeControl : MonoBehaviour
 
     private void Start()
     {
+        elapsedTime = PlayerPrefs.GetFloat("Focus3Time", 0);
+        mazesSolved = PlayerPrefs.GetInt("MazesSolved", 0);
         // Calculate the offset needed to center the grid
         float xOffset = -gridWidth / 2f + cubeScale / 2f;
         float yOffset = -gridWidth / 2f + cubeScale / 2f;

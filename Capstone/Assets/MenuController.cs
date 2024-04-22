@@ -25,6 +25,7 @@ public class MenuController : MonoBehaviour
     public GameObject memoryKey;
     public GameObject logicKey;
     public GameObject focusKey;
+    public GameObject statKey;
     // Start is called before the first frame update
 
     void Start()
@@ -197,6 +198,7 @@ public class MenuController : MonoBehaviour
         stats.gameObject.SetActive(false);
         about.gameObject.SetActive(false);
         titleText.gameObject.SetActive(false);
+        statKey.SetActive(true);
     }
 
     void ShowActivities()

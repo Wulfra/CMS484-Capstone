@@ -39,7 +39,10 @@ public class YahtzeeManager : MonoBehaviour
 
     public GameObject finalScreen;
     public GameObject suspend;
-    
+
+    public int highScore = 0;
+    public float elapsedTime = 0;
+
 
     // Function to activate one of the specified child objects randomly
     public GameObject ActivateRandomChildObject(GameObject parentObject)
@@ -155,6 +158,8 @@ public class YahtzeeManager : MonoBehaviour
     // Example usage
     void Start()
     {
+        elapsedTime = PlayerPrefs.GetFloat("Focus1Time", 0);
+        highScore = PlayerPrefs.GetInt("YahtzeeHigh", 0);
         rollText.text = "Start";
         StartCoroutine(Countdown(60));
         roll.onClick.AddListener(RollDice);
@@ -165,6 +170,19 @@ public class YahtzeeManager : MonoBehaviour
         dieFive.onClick.AddListener(HoldFive);
         gameActive = true;
         score = 0;
+    }
+
+    void OnApplicationQuit()
+    {
+        // Save the score to PlayerPrefs when the application is quitting
+        PlayerPrefs.SetFloat("Focus1Time", elapsedTime);
+        PlayerPrefs.Save();
+
+    }
+
+    void Update()
+    {
+        elapsedTime += Time.deltaTime;
     }
 
     void RollDice()
@@ -218,6 +236,11 @@ public class YahtzeeManager : MonoBehaviour
         suspend.SetActive(false);
         finalScreen.SetActive(true);
         finalScore.text = score.ToString();
+        if (score > highScore)
+        {
+            PlayerPrefs.SetInt("YahtzeeHigh", score);
+            PlayerPrefs.Save();
+        }
         for (int i = 0; i < 10; i++)
         {
             yield return new WaitForSeconds(1f);

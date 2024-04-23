@@ -14,7 +14,7 @@ public class ButtonScript : MonoBehaviour
 
     // Scripts
     public RequiiScript rScript;
-    public DialogueScript dScript;
+    public FileScript fScript;
 
     // Update is called once per frame
     void Update()
@@ -34,8 +34,26 @@ public class ButtonScript : MonoBehaviour
                 if (answer.name == "BackButton") {
                     // Load main menu
                     SceneManager.LoadScene("Menu");
-                } else if (answer.name == "RequiiButton") {
-                    // Load requii info
+                } else if (answer.name == "RequiiButton" && !rScript.requiiRunning) {
+                    StartCoroutine(rScript.runRandomRequiiDialogue(fScript.Eggs));
+                } else if (answer.name == "RequiiButtonRelax1" && !rScript.requiiRunning) {
+                    StartCoroutine(rScript.runRequiiDialogue(fScript.relax1Tutorial));
+                } else if (answer.name == "RequiiButtonRelax2" && !rScript.requiiRunning) {
+                    StartCoroutine(rScript.runRequiiDialogue(fScript.relax2Tutorial));
+                } else if (answer.name == "RequiiButtonRelax3" && !rScript.requiiRunning) {
+                    StartCoroutine(rScript.runRequiiDialogue(fScript.relax3Tutorial));
+                } else if (answer.name == "RequiiButtonFocus1" && !rScript.requiiRunning) {
+                    StartCoroutine(rScript.runRequiiDialogue(fScript.focus1Tutorial));
+                } else if (answer.name == "RequiiButtonFocus2" && !rScript.requiiRunning) {
+                    StartCoroutine(rScript.runRequiiDialogue(fScript.focus2Tutorial));
+                } else if (answer.name == "RequiiButtonFocus3" && !rScript.requiiRunning) {
+                    StartCoroutine(rScript.runRequiiDialogue(fScript.focus3Tutorial));
+                } else if (answer.name == "RequiiButtonLogic1" && !rScript.requiiRunning) {
+                    StartCoroutine(rScript.runRequiiDialogue(fScript.logic1Tutorial));
+                } else if (answer.name == "RequiiButtonLogic2" && !rScript.requiiRunning) {
+                    StartCoroutine(rScript.runRequiiDialogue(fScript.logic2Tutorial));
+                } else if (answer.name == "RequiiButtonLogic3" && !rScript.requiiRunning) {
+                    StartCoroutine(rScript.runRequiiDialogue(fScript.logic3Tutorial));
                 } else if (answer.name == "TapHere") {
                     SceneManager.LoadScene("Menu");
                 }

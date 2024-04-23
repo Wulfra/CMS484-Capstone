@@ -6,6 +6,10 @@ using UnityEngine.SceneManagement;
 
 public class GameManager2 : MonoBehaviour
 {
+    // Requii script
+    public RequiiScript rScript;
+    public FileScript fScript;
+
     // Mouse control variables
     Vector3 mouseLocation;
     RaycastHit2D hit;
@@ -334,7 +338,11 @@ public class GameManager2 : MonoBehaviour
             } else if (hit.collider != null) {
                 GameObject answer = hit.collider.gameObject;
 
-                if (answer.name == "BackButton") {
+                if (answer.name == "RequiiButton" && !rScript.requiiRunning) {
+
+                    StartCoroutine(rScript.runRequiiDialogue(fScript.memory2Tutorial));
+
+                } else if (answer.name == "BackButton") {
 
                     if (gameStarted) {
                         gameOver = false;
@@ -345,7 +353,7 @@ public class GameManager2 : MonoBehaviour
                         SceneManager.LoadScene("Menu");
                     }
 
-                } else if (!gameStarted) {
+                } else if (!gameStarted && (answer.name.Substring(0, 4) == "Menu")) {
                     // Check for menu button clicks if game not started
 
                     string answerName = answer.name;
@@ -363,7 +371,7 @@ public class GameManager2 : MonoBehaviour
 
                     StartCoroutine(RunGame());
 
-                } else {
+                } else if ((answer.name != "RequiiButton") && gameStarted) {
                     string answerNumberString = answer.name.Substring(answer.name.Length - 1);
                     int answerNumber = int.Parse(answerNumberString);
                     
@@ -380,6 +388,8 @@ public class GameManager2 : MonoBehaviour
                     }
 
                     gameOver = true;
+
+                } else {
 
                 }
             }

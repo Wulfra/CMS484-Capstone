@@ -10,18 +10,22 @@ public class RequiiScript : MonoBehaviour
 
     // Store scripts
     public DialogueScript dScript;
-    public FileScript fScript;
+
+    // Check if requii is running
+    public bool requiiRunning = false;
 
     public void runRequii() {
         // Set requii active
         requii.SetActive(true);
+        requiiRunning = true;
     }
 
     public IEnumerator stopRequii() {
         requiiAnimator.SetBool("isExiting", true);
 
-        yield return new WaitForSeconds(.85f);
+        yield return new WaitForSeconds(.8f);
 
+        requiiRunning = false;
         requii.SetActive(false);
     }
 
@@ -30,7 +34,7 @@ public class RequiiScript : MonoBehaviour
         runRequii();
 
         // Wait for startup animation to finish
-        yield return new WaitForSeconds(.85f);
+        yield return new WaitForSeconds(.8f);
 
         // Run dialogue script
         StartCoroutine(dScript.printDialogue(dialogue));

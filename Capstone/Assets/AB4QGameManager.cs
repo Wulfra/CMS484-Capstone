@@ -6,6 +6,10 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    // Requii script
+    public RequiiScript rScript;
+    public FileScript fScript;
+
     // Game control variables
     public Vector3 mouseLocation;
     public RaycastHit2D hit;
@@ -221,7 +225,11 @@ public class GameManager : MonoBehaviour
 
                 GameObject answer = hit.collider.gameObject;
 
-                if (answer.name == "BackButton") {
+                if (answer.name == "RequiiButton" && !rScript.requiiRunning) {
+
+                    StartCoroutine(rScript.runRequiiDialogue(fScript.memory1Tutorial));
+
+                } else if (answer.name == "BackButton") {
                     // If back is clicked while game is started, reset the game and go back to menu
                     // Otherwise, go back to menu scene
                     if (gameStarted) {
@@ -244,12 +252,11 @@ public class GameManager : MonoBehaviour
                         SceneManager.LoadScene("Menu");
                     }
                     
-
-                } else if (!gameStarted) {
+                } else if (!gameStarted && (answer.name.Substring(0, 4) == "Menu")) {
                     // Check for menu button clicks
 
                     string answerName = answer.name;
-                
+
                     if (answerName == "MenuButton1") {
                         difficulty = 8.0f;
                     } else if (answerName == "MenuButton2") {
@@ -260,8 +267,9 @@ public class GameManager : MonoBehaviour
 
                     gameStarted = true;
                     disableMenu();
-                    StartCoroutine("Countdown");
-                } else {
+                    StartCoroutine("Countdown");                    
+                    
+                } else if ((answer.name != "RequiiButton") && gameStarted) {
                     string answerNumberString = answer.name.Substring(answer.name.Length - 1);
                     int answerNumber = int.Parse(answerNumberString) - 1;
                     string chosenAnswerString = finalAnswers[answerNumber].Substring(finalAnswers[answerNumber].Length - 1);
@@ -308,6 +316,8 @@ public class GameManager : MonoBehaviour
                     }
 
                     gameOver = true;
+                } else {
+
                 }
 
             } else {

@@ -4,16 +4,15 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class MenuController : MonoBehaviour
+public class MenuControllerBackup : MonoBehaviour
 {
     public Button activities;
     public Button stats;
     public Button about;
     public Button backOne;
-    public Button backZero;
     public Text aboutText;
-    public GameObject aboutTitle;
-    public GameObject mainTitle;
+    public Text aboutTitle;
+    public Text titleText;
     public Button backTwo;
     public GameObject activityTitle;
     public Button a1;
@@ -25,7 +24,6 @@ public class MenuController : MonoBehaviour
     public GameObject memoryKey;
     public GameObject logicKey;
     public GameObject focusKey;
-    public GameObject statKey;
     // Start is called before the first frame update
 
     void Start()
@@ -33,12 +31,10 @@ public class MenuController : MonoBehaviour
         activities.gameObject.SetActive(true);
         stats.gameObject.SetActive(true);
         about.gameObject.SetActive(true);
-        mainTitle.gameObject.SetActive(true);
-        backZero.gameObject.SetActive(true);
+        titleText.gameObject.SetActive(true);
         about.onClick.AddListener(ShowAbout);
         stats.onClick.AddListener(ShowStats);
         activities.onClick.AddListener(ShowActivities);
-        backZero.onClick.AddListener(TitleBack);
         backOne.onClick.AddListener(AboutBack);
         backTwo.onClick.AddListener(MenuBackOne);
         a1.onClick.AddListener(LoadActivityOne);
@@ -178,15 +174,6 @@ public class MenuController : MonoBehaviour
             a4.gameObject.SetActive(true);
             activityTitle.gameObject.SetActive(true);
         }
-        if (button.name == "BackSeven")
-        {
-            activities.gameObject.SetActive(true);
-            stats.gameObject.SetActive(true);
-            about.gameObject.SetActive(true);
-            mainTitle.gameObject.SetActive(true);
-            backZero.gameObject.SetActive(true);
-            statKey.SetActive(false);
-        }
 
         
 
@@ -197,8 +184,7 @@ public class MenuController : MonoBehaviour
         activities.gameObject.SetActive(false);
         stats.gameObject.SetActive(false);
         about.gameObject.SetActive(false);
-        mainTitle.gameObject.SetActive(false);
-        backZero.gameObject.SetActive(false);
+        titleText.gameObject.SetActive(false);
         aboutText.gameObject.SetActive(true);
         aboutTitle.gameObject.SetActive(true);
         backOne.gameObject.SetActive(true);
@@ -209,9 +195,7 @@ public class MenuController : MonoBehaviour
         activities.gameObject.SetActive(false);
         stats.gameObject.SetActive(false);
         about.gameObject.SetActive(false);
-        mainTitle.gameObject.SetActive(false);
-        backZero.gameObject.SetActive(false);
-        statKey.SetActive(true);
+        titleText.gameObject.SetActive(false);
     }
 
     void ShowActivities()
@@ -219,8 +203,7 @@ public class MenuController : MonoBehaviour
         activities.gameObject.SetActive(false);
         stats.gameObject.SetActive(false);
         about.gameObject.SetActive(false);
-        mainTitle.gameObject.SetActive(false);
-        backZero.gameObject.SetActive(false);
+        titleText.gameObject.SetActive(false);
         backTwo.gameObject.SetActive(true);
         a1.gameObject.SetActive(true);
         a2.gameObject.SetActive(true);
@@ -229,17 +212,12 @@ public class MenuController : MonoBehaviour
         activityTitle.gameObject.SetActive(true);
     }
 
-    void TitleBack() {
-        SceneManager.LoadScene("StartScreen");
-    }
-
     void AboutBack()
     {
         activities.gameObject.SetActive(true);
         stats.gameObject.SetActive(true);
         about.gameObject.SetActive(true);
-        mainTitle.gameObject.SetActive(true);
-        backZero.gameObject.SetActive(true);
+        titleText.gameObject.SetActive(true);
         aboutText.gameObject.SetActive(false);
         aboutTitle.gameObject.SetActive(false);
         backOne.gameObject.SetActive(false);
@@ -250,8 +228,7 @@ public class MenuController : MonoBehaviour
         activities.gameObject.SetActive(true);
         stats.gameObject.SetActive(true);
         about.gameObject.SetActive(true);
-        mainTitle.gameObject.SetActive(true);
-        backZero.gameObject.SetActive(true);
+        titleText.gameObject.SetActive(true);
         backTwo.gameObject.SetActive(false);
         a1.gameObject.SetActive(false);
         a2.gameObject.SetActive(false);

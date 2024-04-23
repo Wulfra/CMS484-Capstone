@@ -34,7 +34,7 @@ public class MazeControl : MonoBehaviour
     {
         // Save the score to PlayerPrefs when the application is quitting
         PlayerPrefs.SetFloat("Focus3Time", elapsedTime);
-        PlayerPrefs.SetFloat("MazesSolved", mazesSolved);
+        PlayerPrefs.SetInt("MazesSolved", mazesSolved);
         PlayerPrefs.Save();
 
     }

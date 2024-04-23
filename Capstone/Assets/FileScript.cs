@@ -47,15 +47,36 @@ public class FileScript : MonoBehaviour
     };
     public List<string> focus1Tutorial = new List<string> {
         "Welcome to focus module 1... dice holdem!",
-        "Placeholder"
+        "To start the game, just click the big start button!",
+        "Once you do, you will see the 5 dice get rolled to a set of numbers",
+        "Here, you can tap on the dice to \"hold\" that one for the next roll",
+        "When you roll again, the die you hold will remain the same",
+        "The goal is to get a: holdem 5, full house, s. straight, or l. straight",
+        "A holdem 5 is when all dice are the same number",
+        "A full house is when 3 are the same number and the other 2 are a pair",
+        "A small straight is when 4 out of 5 count down/up (Ex. 5, 4, 3, 2)",
+        "A large straight is when you have 5 of each number",
+        "So... good luck! Get those lucky rolls!"
     };
     public List<string> focus2Tutorial = new List<string> {
         "Welcome to focus module 2... napsack catch!",
-        "Placeholder"
+        "As you can see, there's sacks of precious gems falling around",
+        "At the top, you have two important values: value and weight",
+        "When you tap on a bag, you add it to your sack: weight and value both",
+        "Smaller objects have a more consistent value and low weight to boot",
+        "Larger objects CAN have more value, but also might have little!",
+        "It is up to you to prioritize consistency or rolling the dice",
+        "You can only carry up to 50 weight, so choose wisely",
+        "So... good luck! Fill your sack with cash!"
     };
     public List<string> focus3Tutorial = new List<string> {
         "Welcome to focus module 3... maze navigator!",
-        "Placeholder"
+        "In the maze, you are represented by the yellow square!",
+        "The finish is always in the same spot, and it is a green square",
+        "Use the nav buttons to move left, right, up, or down in the maze",
+        "The middle button makes a fresh maze if you get stuck",
+        "Finishing a maze also generates a brand new maze for you",
+        "So... good luck! I remember every single maze you solve!"
     };
     public List<string> memory1Tutorial = new List<string> {
         "Welcome to memory module 1... answer before question quiz!",

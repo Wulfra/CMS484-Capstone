@@ -483,7 +483,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.00000047683716, y: -161.12929}
+  m_AnchoredPosition: {x: 0.00000047683716, y: -167.57446}
   m_SizeDelta: {x: 41.12, y: 41.12}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &199005810
@@ -686,7 +686,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 199.80031}
+  m_AnchoredPosition: {x: 0, y: 225.581}
   m_SizeDelta: {x: 237.24, y: 66.72}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &240677060
@@ -711,7 +711,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: ba458c1184541476091009c1abe64a66, type: 3}
-    m_FontSize: 24
+    m_FontSize: 20
     m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 0
@@ -850,7 +850,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -55.094997, y: -161.12428}
+  m_AnchoredPosition: {x: -55.094997, y: -167.56946}
   m_SizeDelta: {x: 44.07, y: 44.07}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &260072496
@@ -1382,7 +1382,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.0049989223, y: -106.03428}
+  m_AnchoredPosition: {x: -0.0049989223, y: -112.479454}
   m_SizeDelta: {x: 44.07, y: 44.07}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &624844861
@@ -1876,7 +1876,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 55.095, y: -161.12428}
+  m_AnchoredPosition: {x: 55.095, y: -167.56946}
   m_SizeDelta: {x: 44.07, y: 44.07}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1165859755
@@ -2457,13 +2457,34 @@ MonoBehaviour:
   - So... good luck! I hope you enjoy it as much as I do!
   focus1Tutorial:
   - Welcome to focus module 1... dice holdem!
-  - Placeholder
+  - To start the game, just click the big start button!
+  - Once you do, you will see the 5 dice get rolled to a set of numbers
+  - Here, you can tap on the dice to "hold" that one for the next row
+  - When you roll again, the die you hold will remain the same
+  - 'The goal is to get a: holdem 5, full house, s. straight, or l. straight'
+  - A holdem 5 is when all dice are the same number
+  - A full house is when 3 are the same number and the other 2 are a pair
+  - A small straight is when 4 out of 5 count down/up (Ex. 5, 4, 3, 2)
+  - A large straight is when you have 5 of each number
+  - So... good luck! Get those lucky rolls!
   focus2Tutorial:
   - Welcome to focus module 2... napsack catch!
-  - Placeholder
+  - As you can see, there's sacks of precious gems falling around
+  - 'At the top, you have two important values: value and weight'
+  - 'When you tap on a bag, you add it to your sack: weight and value both'
+  - Smaller objects have a more consistent value and low weight to boot
+  - Larger objects CAN have more value, but also might have little!
+  - It is up to you to prioritize consistency or rolling the dice
+  - You can only carry up to 50 weight, so choose wisely
+  - So... good luck! Fill your sack with cash!
   focus3Tutorial:
   - Welcome to focus module 3... maze navigator!
-  - Placeholder
+  - In the maze, you are represented by the yellow square!
+  - The finish is always in the same spot, and it is a green square
+  - Use the nav buttons to move left, right, up, or down in the maze
+  - The middle button makes a fresh maze if you get stuck
+  - Finishing a maze also generates a brand new maze for you
+  - So... good luck! I remember every single maze you solve!
   memory1Tutorial:
   - Welcome to memory module 1... answer before question quiz!
   - It is aptly named, as you will see a set of answers before the question
@@ -2675,7 +2696,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.004998684, y: -216.22427}
+  m_AnchoredPosition: {x: -0.004998684, y: -222.66945}
   m_SizeDelta: {x: 44.07, y: 44.07}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1612557836

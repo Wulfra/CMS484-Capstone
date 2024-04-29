@@ -7,7 +7,7 @@ public class ButtonFalling : MonoBehaviour
 {
     public Button[] buttons;
     public float minSpeed = 1f;
-    public float maxSpeed = 5f;
+    public float maxSpeed = 3f;
 
     public int weight;
     public int value;
@@ -21,18 +21,25 @@ public class ButtonFalling : MonoBehaviour
     public GameObject failText;
     float elapsedTime = 0;
     int highScore = 0;
+    bool active = true;
+    public Text current;
+    public Text finalVal;
 
     void Update()
     {
-        elapsedTime += Time.deltaTime;
-        weightText.text = "Weight: " + weight.ToString();
-        valueText.text = "Value: " + value.ToString();
-
-        if (weight > 50)
+        if (active)
         {
-            storageVar.SetActive(false);
-            failText.SetActive(true);
-            SceneManager.LoadScene("Menu");
+            elapsedTime += Time.deltaTime;
+            weightText.text = "Weight: " + weight.ToString();
+            valueText.text = "Value: " + value.ToString();
+
+            if (weight > 50)
+            {
+                active = false;
+                storageVar.SetActive(false);
+                failText.SetActive(true);
+                SceneManager.LoadScene("Menu");
+            }
         }
     }
 
@@ -40,7 +47,7 @@ public class ButtonFalling : MonoBehaviour
     {
         elapsedTime = PlayerPrefs.GetFloat("Focus2Time", 0);
         highScore = PlayerPrefs.GetInt("KnapSackHigh", 0);
-        StartCoroutine(Countdown(60));
+        StartCoroutine(Countdown(120));
         fallingButtons = new Button[buttonsFallingCount];
         // Add listeners to buttons
         foreach (Button button in buttons)
@@ -151,6 +158,10 @@ public class ButtonFalling : MonoBehaviour
 
         // Timer is done
         Debug.Log("Time has run out!");
+        storageVar.SetActive(false);
+        active = false;
+        finalVal.gameObject.SetActive(true);
+        finalVal.text = "Final Value: " + value;
         timeRemaining = 0;
         if (value > highScore)
         {
@@ -166,13 +177,14 @@ public class ButtonFalling : MonoBehaviour
 
     IEnumerator StartFalling()
     {
-        while (true)
+        while (true && active)
         {
             // Select buttons randomly for falling
             for (int i = 0; i < buttonsFallingCount; i++)
             {
                 fallingButtons[i] = buttons[Random.Range(0, buttons.Length)];
                 StartFalling(fallingButtons[i]);
+                current.text = "Currently Falling: " + fallingButtons[i].name;
                 yield return new WaitForSeconds(Random.Range(0.5f, 1.5f)); // Delay between each falling pair
             }
             yield return new WaitForSeconds(3f); // Delay between each group of falling buttons

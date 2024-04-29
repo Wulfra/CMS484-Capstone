@@ -18,7 +18,7 @@ public class MazeControl : MonoBehaviour
     public float gridWidth = 5f; // Width of the grid in Unity units
     public float cubeScale = 0.2f; // Scale of each cube
     public float elapsedTime = 0;
-    public int mazesSolved;
+    public int mazesSolved = 0;
 
     void Update()
     {
@@ -26,6 +26,8 @@ public class MazeControl : MonoBehaviour
         {
             StartOver();
             mazesSolved += 1;
+            PlayerPrefs.SetInt("MazesSolved", mazesSolved);
+            PlayerPrefs.Save();
         }
         elapsedTime += Time.deltaTime;
     }
